@@ -1,9 +1,10 @@
-import { Moon, Notebook, Sun, type LucideProps } from "lucide-react";
+import { ArrowUp, Moon, Notebook, Sun, type LucideProps } from "lucide-react";
 
 export const Icon = {
   sun: Sun,
   moon: Moon,
   sketchbook: Notebook,
+  arrowUp: ArrowUp,
   brandLogo: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.82 76" {...props}>
       <g transform="translate(-1123 -3101)">

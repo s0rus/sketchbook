@@ -1,7 +1,7 @@
-import { BlinkingLink } from "@/components/blinking-link";
 import { sketches } from "@/components/sketches";
-import { StickyNav } from "@/components/sticky-nav";
+import { BlinkingLink } from "@/components/ui/blinking-link";
 import { Icon } from "@/components/ui/icon";
+import { StickyNav } from "@/components/ui/sticky-nav/sticky-nav";
 import Link from "next/link";
 
 export default function Home() {

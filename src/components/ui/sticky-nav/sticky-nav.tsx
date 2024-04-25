@@ -1,5 +1,6 @@
+import { ThemeToggle } from "../theme-toggle";
 import { ComponentScroller } from "./component-scroller";
-import { ThemeToggle } from "./theme-toggle";
+import { ScrollToTopButton } from "./scroll-to-top-button";
 
 export function StickyNav(props: { componentCount: number }) {
   return (
@@ -8,6 +9,7 @@ export function StickyNav(props: { componentCount: number }) {
         <nav className="flex flex-col gap-2 rounded-full border border-foreground/5 bg-secondary p-2">
           <ThemeToggle />
           <ComponentScroller componentCount={props.componentCount} />
+          <ScrollToTopButton />
         </nav>
       </div>
     </div>

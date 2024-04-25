@@ -1,13 +1,13 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Icon } from "./ui/icon";
+import { Icon } from "./icon";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from "./tooltip";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();

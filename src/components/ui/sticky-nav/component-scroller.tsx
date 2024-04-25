@@ -1,7 +1,7 @@
 "use client";
 
-import { sketches } from "./sketches";
-import { Button } from "./ui/button";
+import { sketches } from "../../sketches";
+import { Button } from "../button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,13 +10,13 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from "../tooltip";
 
 export function ComponentScroller(props: { componentCount: number }) {
   function handleScrollToComponent(value: string) {
@@ -33,8 +33,8 @@ export function ComponentScroller(props: { componentCount: number }) {
           <DropdownMenuTrigger asChild>
             <TooltipTrigger asChild>
               <Button
-                variant="outline"
-                className="h-6 w-6 rounded-full p-0 font-mono text-xs font-bold tracking-tighter hover:bg-background/60"
+                variant="ghost"
+                className="h-6 w-6 rounded-full border border-muted-foreground p-0 font-mono text-xs font-bold tracking-tighter hover:bg-background/60"
               >
                 {props.componentCount}
               </Button>
