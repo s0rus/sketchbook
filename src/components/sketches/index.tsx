@@ -1,3 +1,5 @@
+import { ClerkTracingBeam } from "./clerk-tracing-beam";
+
 export type Sketch = {
   title: string;
   description: string;
@@ -6,10 +8,10 @@ export type Sketch = {
 };
 
 export const sketches: Sketch[] = [
-  // {
-  //   title: "Clerk tracing beam",
-  //   description: "Recreation of scroll tracing beam from clerk.com blog posts.",
-  //   tags: ["react", "framer-motion", "tailwindcss"],
-  //   component: <ClerkTracingBeam />,
-  // },
+  {
+    title: "Clerk tracing beam",
+    description: "Recreation of scroll tracing beam from clerk.com blog posts.",
+    tags: ["react", "framer-motion", "tailwindcss"],
+    component: <ClerkTracingBeam />,
+  },
 ];
