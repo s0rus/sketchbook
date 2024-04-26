@@ -44,7 +44,7 @@ export function ClerkTracingBeam() {
         <div className="relative">
           <motion.div style={{ color: activeColor }} className="mr-2 flex min-w-fit flex-row items-center gap-2">
             <time className="text-nowrap">{date}</time>
-            <div className="z-10 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-foreground">
+            <div className="z-10 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-muted">
               <motion.div style={{ backgroundColor: activeColor }} className="min-h-2 min-w-2 rounded-full"></motion.div>
             </div>
           </motion.div>
