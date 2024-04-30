@@ -1,4 +1,5 @@
 import { ClerkTracingBeam } from "./clerk-tracing-beam";
+import { Feedback } from "./feedback";
 
 export type Sketch = {
   title: string;
@@ -14,4 +15,16 @@ export const sketches: Sketch[] = [
     tags: ["react", "framer-motion", "tailwindcss"],
     component: <ClerkTracingBeam />,
   },
+  {
+    title: "Feedback form",
+    description: "Animation exercise for a feedback form from animations.dev course by Emil Kowalski.",
+    tags: ["react", "framer-motion", "tailwindcss"],
+    component: <Feedback />,
+  },
+  // {
+  //   title: "Before/After slider",
+  //   description: "A before/after slider component.",
+  //   tags: ["react", "tailwindcss"],
+  //   component: <BeforeAfterSlider />,
+  // },
 ];

@@ -47,7 +47,7 @@ export default function Page() {
                   ))}
                 </ul>
               </div>
-              <div className="relative flex h-[400px] w-full items-center justify-center rounded-lg border border-muted p-4 pl-8 shadow-lg md:h-[640px]">
+              <div className="relative flex h-[400px] w-full flex-1 items-center justify-center rounded-lg border border-muted p-4 pl-8 shadow-lg md:h-[640px]">
                 {sketch.component}
                 <div className={"absolute -left-5 h-full w-12 bg-[url('/assets/ring.svg')] bg-repeat-space"}></div>
               </div>
