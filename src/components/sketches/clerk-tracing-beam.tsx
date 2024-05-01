@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export function ClerkTracingBeam() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -12,11 +12,27 @@ export function ClerkTracingBeam() {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
 
-  useLayoutEffect(() => {
+  const updateContentHeight = () => {
     if (contentRef.current) {
       setContentHeight(contentRef.current.offsetHeight);
     }
+  };
+
+  useLayoutEffect(() => {
+    updateContentHeight();
   }, [contentRef]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      updateContentHeight();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const y1 = useSpring(useTransform(scrollYProgress, [0, 0.9], [0, contentHeight]), {
     stiffness: 500,
