@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 import { sketches } from "../../sketches";
 import { Button } from "../button";
 import {
@@ -11,20 +13,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../tooltip";
 
 export function ComponentScroller(props: { componentCount: number }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   function handleScrollToComponent(value: string) {
     const element = document.getElementById(value);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
+
+  useEffect(() => {
+    handleScrollToComponent(searchParams.get("c") ?? "");
+  }, [searchParams]);
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
 
   return (
     <TooltipProvider>
@@ -40,14 +55,16 @@ export function ComponentScroller(props: { componentCount: number }) {
               </Button>
             </TooltipTrigger>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="right"
-            className="w-56"
-            onCloseAutoFocus={(e) => e.preventDefault()}
-          >
+          <DropdownMenuContent side="right" className="w-56" onCloseAutoFocus={(e) => e.preventDefault()}>
             <DropdownMenuLabel>Scroll to</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup onValueChange={handleScrollToComponent}>
+            <DropdownMenuRadioGroup
+              onValueChange={(v) => {
+                router.push(pathname + "?" + createQueryString("c", v), {
+                  scroll: false,
+                });
+              }}
+            >
               {sketches.map((sketch) => (
                 <DropdownMenuRadioItem
                   key={`${sketch.title}-scroller`}
