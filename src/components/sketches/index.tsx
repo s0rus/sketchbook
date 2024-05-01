@@ -1,5 +1,6 @@
 import { ClerkTracingBeam } from "./clerk-tracing-beam";
 import { Feedback } from "./feedback";
+import { MultiStep } from "./multi-step";
 
 export type Sketch = {
   title: string;
@@ -20,6 +21,12 @@ export const sketches: Sketch[] = [
     description: "Animation exercise for a feedback form from animations.dev course by Emil Kowalski.",
     tags: ["react", "framer-motion", "tailwindcss"],
     component: <Feedback />,
+  },
+  {
+    title: "Multi-step component",
+    description: "Animation exercise for a direction aware multi-step component from animations.dev course by Emil Kowalski.",
+    tags: ["react", "framer-motion", "tailwindcss"],
+    component: <MultiStep />,
   },
   // {
   //   title: "Before/After slider",

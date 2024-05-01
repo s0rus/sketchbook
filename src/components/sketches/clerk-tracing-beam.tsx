@@ -100,7 +100,7 @@ export function ClerkTracingBeam() {
             </defs>
           </svg>
         </div>
-        <div ref={contentRef} className="prose prose-invert relative">
+        <div ref={contentRef} className="prose prose-stone relative">
           <h2>Clerk Tracing Beam</h2>
           {Array.from({ length: 20 }).map((_, i) => (
             <p key={i}>
