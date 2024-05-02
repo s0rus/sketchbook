@@ -16,7 +16,7 @@ export default function Page() {
               id={sketch.title.replace(/\s/g, "-").toLowerCase()}
               className="flex flex-col items-start gap-y-4 lg:flex-row lg:gap-x-24 lg:gap-y-0"
             >
-              <div className="max-w-full lg:max-w-[30ch]">
+              <div className="max-w-full lg:min-w-[30ch] lg:max-w-[30ch]">
                 <h2 className="mb-1 text-pretty font-mono text-base text-muted-foreground/95">{sketch.title}</h2>
                 <p className="mb-4 text-pretty text-sm text-muted-foreground/40">{sketch.description}</p>
                 <ul className="flex flex-wrap gap-x-1 gap-y-2 text-muted-foreground/40">

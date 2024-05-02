@@ -28,10 +28,4 @@ export const sketches: Sketch[] = [
     tags: ["react", "framer-motion", "tailwindcss"],
     component: <MultiStep />,
   },
-  // {
-  //   title: "Before/After slider",
-  //   description: "A before/after slider component.",
-  //   tags: ["react", "tailwindcss"],
-  //   component: <BeforeAfterSlider />,
-  // },
 ];
