@@ -1,4 +1,5 @@
 import { ClerkTracingBeam } from "./clerk-tracing-beam";
+import { DynamicIsland } from "./dynamic-island";
 import { Feedback } from "./feedback";
 import { MultiStep } from "./multi-step";
 
@@ -27,5 +28,11 @@ export const sketches: Sketch[] = [
     description: "Animation exercise for a direction aware multi-step component from animations.dev course by Emil Kowalski.",
     tags: ["react", "framer-motion", "tailwindcss"],
     component: <MultiStep />,
+  },
+  {
+    title: "Iphone dynamic island",
+    description: "Recreation of the iPhone dynamic island with various states.",
+    tags: ["react", "framer-motion", "tailwindcss"],
+    component: <DynamicIsland />,
   },
 ];

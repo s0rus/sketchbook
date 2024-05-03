@@ -80,7 +80,7 @@ export function MultiStep() {
       >
         <div ref={ref} className="p-6">
           <AnimatePresence mode="popLayout" initial={false} custom={dir}>
-            <motion.div ref={ref} key={currentStep} variants={variants} custom={dir} initial="initial" animate="animate" exit="exit">
+            <motion.div key={currentStep} variants={variants} custom={dir} initial="initial" animate="animate" exit="exit">
               {content}
             </motion.div>
           </AnimatePresence>
