@@ -1,4 +1,4 @@
-import { ArrowUp, Bell, BellOff, CheckCircle, Loader2, Moon, Notebook, Sun, X, type LucideProps } from "lucide-react";
+import { ArrowUp, Bell, BellOff, CheckCircle, Loader2, Moon, Notebook, Plus, Sun, X, type LucideProps } from "lucide-react";
 
 export const Icon = {
   sun: Sun,
@@ -10,6 +10,7 @@ export const Icon = {
   bell: Bell,
   bellOff: BellOff,
   X: X,
+  plus: Plus,
   play: (props: LucideProps) => (
     <svg height="16" strokeLinejoin="round" viewBox="0 0 16 16" width="16" {...props}>
       <path

@@ -1,3 +1,4 @@
+import { ArcVoiceSearch } from "./arc-voice-search";
 import { ClerkTracingBeam } from "./clerk-tracing-beam";
 import { DynamicIsland } from "./dynamic-island";
 import { Feedback } from "./feedback";
@@ -34,5 +35,11 @@ export const sketches: Sketch[] = [
     description: "Recreation of the iPhone dynamic island with various states.",
     tags: ["react", "framer-motion", "tailwindcss"],
     component: <DynamicIsland />,
+  },
+  {
+    title: "Arc voice search",
+    description: "Recreation of voice search process from Arc Search app.",
+    tags: ["react", "framer-motion", "tailwindcss"],
+    component: <ArcVoiceSearch />,
   },
 ];

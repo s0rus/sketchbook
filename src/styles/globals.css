@@ -61,3 +61,28 @@
 .bg-repeat-space {
   background-repeat: no-repeat space;
 }
+
+.arc-search-blob {
+  background-size: 100% 100%;
+  background-position:
+    0px 0px,
+    0px 0px,
+    0px 0px;
+  background-image: radial-gradient(100% 100% at 80% 60%, #cd077dff 32%, #ff000000 98%),
+    radial-gradient(100% 100% at 30% 60%, #2c42ecff 15%, #ff000000 100%);
+  filter: blur(50px);
+}
+
+.arc-search-initial-bg {
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: radial-gradient(120% 120% at 50% 100%, #ffffffff 17%, #ff000000 71%);
+  filter: blur(32px);
+}
+
+.arc-search-target-bg {
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: radial-gradient(100% 80% at 50% 40%, #5e12f0ff 0%, #ff000000 100%);
+  filter: blur(32px);
+}
