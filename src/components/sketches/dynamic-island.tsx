@@ -70,7 +70,7 @@ export function DynamicIsland() {
           <motion.div
             key="RING"
             layoutId="island"
-            className="flex items-center justify-between gap-16 bg-black px-2 py-1"
+            className="flex items-center justify-between gap-16 bg-black px-2 py-1 text-white"
             style={{ borderRadius: "32px" }}
           >
             <motion.div
@@ -267,7 +267,7 @@ export function DynamicIsland() {
                 <div className="flex flex-row items-center gap-2">
                   <Image src={songAsset} alt="song" width={48} height={48} className="aspect-square h-[48px] w-[48px] rounded-md" />
                   <div>
-                    <p className="text-sm font-bold">imgonnagetyouback</p>
+                    <p className="text-sm font-bold text-white">imgonnagetyouback</p>
                     <p className="text-sm leading-3 text-white/60">Taylor Swift</p>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export function DynamicIsland() {
               </div>
               <div className="flex flex-row items-center gap-2">
                 <span className="w-[36px] text-left text-sm text-white/60">{`${formatTime(time)}`}</span>
-                <div className="relative h-0.5 flex-1 overflow-hidden rounded-sm bg-muted">
+                <div className="relative h-0.5 flex-1 overflow-hidden rounded-sm bg-white/20">
                   <motion.div
                     className="absolute inset-0 bg-white"
                     initial={{ x: "-100%" }}
@@ -305,7 +305,7 @@ export function DynamicIsland() {
                 </div>
                 <span className="min-w-[36px] text-right text-sm text-white/60">3:42</span>
               </div>
-              <div className="mt-1 flex flex-row items-center justify-center gap-4 pb-1">
+              <div className="mt-1 flex flex-row items-center justify-center gap-4 pb-1 text-white">
                 <Icon.skipBack className="h-5 w-5" />
                 <AnimatePresence mode="wait" initial={false}>
                   <button className="flex items-center justify-center" onClick={() => setIsTimerRunning((prevRunning) => !prevRunning)}>
