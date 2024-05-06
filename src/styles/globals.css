@@ -68,9 +68,9 @@
     0px 0px,
     0px 0px,
     0px 0px;
-  background-image: radial-gradient(100% 100% at 80% 60%, #cd077dff 32%, #ff000000 98%),
-    radial-gradient(100% 100% at 30% 60%, #2c42ecff 15%, #ff000000 100%);
-  filter: blur(50px);
+  background-image: radial-gradient(100% 100% at 80% 30%, #cd077dff 32%, #ff000000 98%),
+    radial-gradient(100% 100% at 30% 20%, #2c42ecff 100%, #ff000000 100%);
+  filter: blur(20px);
 }
 
 .arc-search-initial-bg {
