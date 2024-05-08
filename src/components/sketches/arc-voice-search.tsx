@@ -147,7 +147,7 @@ export function ArcVoiceSearch() {
   }, [searchMode]);
 
   return (
-    <div className="relative h-[500px] w-[300px] overflow-hidden rounded-xl border-2 border-muted shadow-lg">
+    <div className="relative h-[500px] w-[280px] overflow-hidden rounded-xl border-2 border-muted shadow-lg">
       <div className="relative flex h-full w-full flex-col items-center justify-end">
         <div className="absolute bottom-0 z-[5] flex h-[60px] w-full items-center justify-center bg-muted/80 dark:bg-muted/20">
           <button
