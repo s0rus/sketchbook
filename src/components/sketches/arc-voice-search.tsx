@@ -3,17 +3,21 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import Image from "next/image";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "../ui/icon";
 import { Skeleton } from "../ui/skeleton";
 
 export function ArcVoiceSearch() {
-  const [searchMode, setSearchMode] = useState<"PROMPT" | "LOADING" | "RESULTS" | "OFF">("LOADING");
+  const [searchMode, setSearchMode] = useState<"PROMPT" | "LOADING" | "RESULTS" | "OFF">("OFF");
+  const [searchText, setSearchText] = useState("");
+  const searchModeTimeoutRef = useRef<NodeJS.Timeout>();
+  const propmptTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setSearchMode("OFF");
+        setSearchText("");
       }
     };
 
@@ -22,10 +26,34 @@ export function ArcVoiceSearch() {
   }, []);
 
   useEffect(() => {
-    if (searchMode === "PROMPT") {
-      setTimeout(() => setSearchMode("LOADING"), 3000);
+    if (propmptTimeoutRef.current) {
+      clearTimeout(propmptTimeoutRef.current);
     }
-  }, [searchMode]);
+
+    if (searchModeTimeoutRef.current) {
+      clearTimeout(searchModeTimeoutRef.current);
+    }
+
+    if (searchMode === "PROMPT") {
+      const timeout = setTimeout(() => setSearchMode("LOADING"), 3500);
+      searchModeTimeoutRef.current = timeout;
+
+      if (!searchText) {
+        const timeout = setTimeout(() => setSearchText("Who is the top 1 WTA player in the world?"), 1000);
+        propmptTimeoutRef.current = timeout;
+      }
+    }
+
+    return () => {
+      if (searchModeTimeoutRef.current) {
+        clearTimeout(searchModeTimeoutRef.current);
+      }
+
+      if (propmptTimeoutRef.current) {
+        clearTimeout(propmptTimeoutRef.current);
+      }
+    };
+  }, [searchMode, searchText]);
 
   const content = useMemo(() => {
     switch (searchMode) {
@@ -69,7 +97,7 @@ export function ArcVoiceSearch() {
                 height="11"
                 viewBox="0 0 10 11"
                 fill="none"
-                className="z-10 mb-8 h-14 w-14"
+                className="z-10 h-14 w-14"
                 animate={{
                   y: [0, 12, -4],
                 }}
@@ -112,7 +140,31 @@ export function ArcVoiceSearch() {
                   strokeLinecap="round"
                 />
               </motion.svg>
-              <p className="z-10 text-xl text-white">Hi! How can I help?</p>
+
+              <div className="z-10 mx-4 mt-8">
+                {searchText ? (
+                  <motion.div
+                    layout
+                    key={`arc-prompt-${searchText}`}
+                    variants={promptVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="flex flex-wrap items-center justify-center rounded-2xl bg-black/20 px-2 py-2 text-sm text-white"
+                  >
+                    {searchText.split(" ").map((word, index) => (
+                      <motion.span
+                        key={`arc-prompt-word-${index}`}
+                        variants={promptItemVariants}
+                        transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                      >
+                        {word}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <motion.p className="py-1 text-xl text-white">Hi! How can I help?</motion.p>
+                )}
+              </div>
               <div className="mb-4 flex h-[60px] flex-row items-center gap-x-2">
                 {Array.from({ length: 12 }).map((_, index) => (
                   <motion.div
@@ -155,16 +207,20 @@ export function ArcVoiceSearch() {
             transition={{ type: "spring", duration: 0.5, bounce: 0 }}
             className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-muted/40 px-4 py-6 dark:bg-muted/20"
           >
-            <p className="z-[3] text-sm text-white drop-shadow-lg">Searching...</p>
-            <h2 className="text-pretty text-xl font-semibold leading-5 tracking-tighter text-white drop-shadow-lg">
-              Who is the top 1 WTA player in the world?
-            </h2>
+            <p className="z-[3] mt-12 text-sm text-white drop-shadow-lg">Searching...</p>
+            <h2 className="text-pretty text-xl font-semibold leading-5 tracking-tighter text-white drop-shadow-lg">{searchText}</h2>
             <div className="mt-6 flex w-fit flex-row gap-3">
-              <div className="flex h-[72px] w-[100px] flex-col overflow-hidden rounded-lg bg-muted/80">
+              <div
+                aria-label="Search google"
+                className="flex h-[72px] w-[100px] cursor-pointer flex-col overflow-hidden rounded-lg bg-muted/80"
+              >
                 <div className="flex w-full flex-1 items-center gap-2 whitespace-nowrap pl-2 text-xs">
                   <Icon.google className="h-auto min-w-fit" />
-                  <p aria-hidden="true" className="rounded-xl bg-white px-2 py-1 dark:bg-muted-foreground/40 dark:text-muted-foreground">
-                    Who is the top 1 WTA player in the world?
+                  <p
+                    aria-hidden="true"
+                    className="rounded-xl border border-muted-foreground/40 bg-white px-2 py-1 dark:bg-muted dark:text-muted-foreground"
+                  >
+                    {searchText}
                   </p>
                 </div>
                 <div className="bg-muted px-2 py-2">
@@ -187,10 +243,22 @@ export function ArcVoiceSearch() {
                   <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
                   <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
                 </div>
-                <div className="flex h-full w-full items-end">
+                <div className="flex w-full items-end">
                   <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
                 </div>
               </div>
+            </div>
+            <div className="mt-6 flex h-full w-full flex-col gap-2">
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <div className="flex flex-row items-start gap-x-2" key={`arc-loading-results-${idx}`}>
+                  <Skeleton className="h-[16px] w-[16px] bg-muted-foreground/50" />
+                  <div className="flex w-full flex-col gap-y-1">
+                    <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                    <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                    <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
+                  </div>
+                </div>
+              ))}
             </div>
             <motion.div
               className="absolute inset-0 -z-[1] h-full w-full"
@@ -209,7 +277,7 @@ export function ArcVoiceSearch() {
       case "OFF":
         return null;
     }
-  }, [searchMode]);
+  }, [searchMode, searchText]);
 
   return (
     <div className="relative h-[500px] w-[280px] overflow-hidden rounded-xl border-2 border-muted shadow-lg">
@@ -226,7 +294,10 @@ export function ArcVoiceSearch() {
         </div>
         <motion.div
           aria-label="Mutua Madrid 2024 News"
-          onClick={() => setSearchMode("OFF")}
+          onClick={() => {
+            setSearchMode("OFF");
+            setSearchText("");
+          }}
           variants={initialContentVariants}
           animate={searchMode === "PROMPT" || searchMode === "OFF" ? "visible" : "minimized"}
           className={cn("absolute inset-0 overflow-hidden", searchMode !== "PROMPT" && searchMode !== "OFF" && "cursor-pointer")}
@@ -256,6 +327,29 @@ export function ArcVoiceSearch() {
   );
 }
 
+const promptVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      staggerChildren: 0.3,
+      type: "spring",
+      bounce: 0,
+    },
+  },
+};
+
+const promptItemVariants: Variants = {
+  hidden: { opacity: 0, marginRight: 0, width: 0 },
+  visible: {
+    width: "fit-content",
+    height: "auto",
+    opacity: 1,
+    marginRight: "4px",
+  },
+};
+
 const soundbarVariants: Variants = {
   visible: (index: number) => ({
     height: [`8px`, `24px`, `8px`],
@@ -263,7 +357,7 @@ const soundbarVariants: Variants = {
       repeat: Infinity,
       duration: Math.random() * 1.5 + index / 10,
       ease: "easeOut",
-      delay: 0.5,
+      delay: 0.8,
     },
   }),
   hidden: { height: ["1px"] },
