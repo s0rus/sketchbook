@@ -1,5 +1,8 @@
 "use client";
 
+import wtaLogo from "@/assets/arc-voice-search-a1.png";
+import wikipediaLogo from "@/assets/arc-voice-search-a2.png";
+import igaBg from "@/assets/arc-voice-search-a3.webp";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import Image from "next/image";
@@ -25,6 +28,7 @@ export function ArcVoiceSearch() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Mocking fetch of results
   useEffect(() => {
     if (propmptTimeoutRef.current) {
       clearTimeout(propmptTimeoutRef.current);
@@ -42,6 +46,11 @@ export function ArcVoiceSearch() {
         const timeout = setTimeout(() => setSearchText("Who is the top 1 WTA player in the world?"), 1000);
         propmptTimeoutRef.current = timeout;
       }
+    }
+
+    if (searchMode === "LOADING") {
+      const timeout = setTimeout(() => setSearchMode("RESULTS"), 2000);
+      searchModeTimeoutRef.current = timeout;
     }
 
     return () => {
@@ -91,55 +100,11 @@ export function ArcVoiceSearch() {
               className="z-10 flex h-full w-full flex-col items-center justify-end"
             >
               <div className="arc-search-blob absolute left-0 top-[55%] h-full w-full rounded-full"></div>
-              <motion.svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="11"
-                viewBox="0 0 10 11"
-                fill="none"
-                className="z-10 h-14 w-14"
-                animate={{
-                  y: [0, 12, -4],
-                }}
-                transition={{
-                  ease: "easeInOut",
-                  delay: 0.5,
-                  duration: 0.3,
-                }}
-              >
-                <motion.path
-                  animate={{ scaleY: [1, 0.2, 1], rotate: [0, 6], originY: "center" }}
-                  transition={{
-                    ease: "easeOut",
-                    delay: 0.5,
-                    duration: 0.3,
-                  }}
-                  d="M3 1V5"
-                  stroke="white"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-                <motion.path
-                  animate={{ scaleY: [1, 0.2, 1], rotate: [0, 6], originY: "center" }}
-                  transition={{
-                    ease: "easeOut",
-                    delay: 0.5,
-                    duration: 0.3,
-                  }}
-                  d="M7 1V5"
-                  stroke="white"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-                <motion.path
-                  animate={{ scaleY: [1, 0.8, 1], scaleX: [1, 1.2, 1], y: [0, 0.6, 0.6], rotate: [0, 6, 6], originY: "center" }}
-                  transition={{ ease: "easeOut", delay: 0.5, duration: 0.3 }}
-                  d="M1 8C2.5 10 7.5 10 9 8"
-                  stroke="white"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-              </motion.svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 11" fill="none" className="z-10 h-14 w-14">
+                <path d="M3 1V5" stroke="white" stroke-width="1.4" stroke-linecap="round" />
+                <path d="M7 1V5" stroke="white" stroke-width="1.4" stroke-linecap="round" />
+                <path d="M1 8C2.5 10 7.5 10 9 8" stroke="white" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
 
               <div className="z-10 mx-4 mt-8">
                 {searchText ? (
@@ -192,6 +157,7 @@ export function ArcVoiceSearch() {
           </Fragment>
         );
       case "LOADING":
+      case "RESULTS":
         return (
           <motion.div
             key="arc-loading"
@@ -205,11 +171,31 @@ export function ArcVoiceSearch() {
             }}
             exit={{ opacity: 0, scale: 0.2 }}
             transition={{ type: "spring", duration: 0.5, bounce: 0 }}
-            className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-muted/40 px-4 py-6 dark:bg-muted/20"
+            className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-muted/40 dark:bg-muted/20"
           >
-            <p className="z-[3] mt-12 text-sm text-white drop-shadow-lg">Searching...</p>
-            <h2 className="text-pretty text-xl font-semibold leading-5 tracking-tighter text-white drop-shadow-lg">{searchText}</h2>
-            <div className="mt-6 flex w-fit flex-row gap-3">
+            <div>
+              {searchMode === "LOADING" ? (
+                <>
+                  <p className="z-[3] mt-12 px-4 text-sm text-white drop-shadow-lg">Searching...</p>
+                  <h2 className="mb-6 text-pretty px-4 text-xl font-semibold leading-5 tracking-tighter text-white drop-shadow-lg">
+                    {searchText}
+                  </h2>
+                </>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="relative flex h-[134px] flex-col justify-end overflow-hidden bg-gradient-to-t from-black/50 via-transparent to-transparent"
+                >
+                  <Image src={igaBg} alt="" className="absolute inset-0 z-[-1] h-full w-full object-cover" />
+                  <h2 className="text-pretty px-4 pb-4 text-xl font-semibold leading-5 tracking-tighter text-white drop-shadow-lg">
+                    Top 1 WTA Player
+                  </h2>
+                  <div className="absolute bottom-[-10px] z-10 h-[24px] w-full bg-[url('/assets/wave-light.svg')] dark:bg-[url('/assets/wave-dark.svg')]"></div>
+                </motion.div>
+              )}
+            </div>
+            <div className="flex w-fit flex-row gap-3 px-4">
               <div
                 aria-label="Search google"
                 className="flex h-[72px] w-[100px] cursor-pointer flex-col overflow-hidden rounded-lg bg-muted/80"
@@ -227,53 +213,132 @@ export function ArcVoiceSearch() {
                   <p className="text-xs font-semibold">Search google</p>
                 </div>
               </div>
-              <div className="flex h-[72px] w-[100px] flex-col items-center justify-center gap-y-2 rounded-lg bg-muted px-2 py-4">
-                <div className="flex h-full w-full flex-col gap-y-1">
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                </div>
-                <div className="flex h-full w-full items-end">
-                  <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
-                </div>
-              </div>
-              <div className="flex h-[72px] w-[100px] flex-col items-center justify-center gap-y-2 rounded-lg bg-muted px-2 py-4">
-                <div className="flex h-full w-full flex-col gap-y-1">
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                  <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                </div>
-                <div className="flex w-full items-end">
-                  <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
-                </div>
-              </div>
+              <AnimatePresence mode="popLayout">
+                {searchMode === "LOADING" ? (
+                  <motion.div
+                    key="arc-loading-results-1-loading"
+                    className="flex h-[72px] w-[100px] flex-col items-center justify-center gap-y-2 rounded-lg bg-muted px-2 py-4"
+                    exit={{ opacity: 0, scale: 0.2, filter: "blur(4px)" }}
+                    transition={{ type: "spring", duration: 0.2, bounce: 0 }}
+                  >
+                    <div className="flex h-full w-full flex-col gap-y-1">
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                    </div>
+                    <div className="flex h-full w-full items-end">
+                      <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="arc-loading-results-1-result"
+                    aria-label="WTA Tennis"
+                    className="flex h-[72px] w-[100px] cursor-pointer flex-col rounded-lg bg-muted"
+                    initial={{ opacity: 0, scale: 0.2, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    transition={{ type: "spring", duration: 0.2, bounce: 0 }}
+                  >
+                    <div className="flex w-full flex-1 items-center gap-2 text-pretty px-2 text-[10px] font-bold">
+                      Official Women&apos;s Tennis Rankings
+                    </div>
+                    <div className="inline-flex items-center gap-x-1 px-2 py-2">
+                      <Image src={wtaLogo} className="h-4 w-4 dark:rounded-sm dark:bg-white" width={32} height={32} alt="" />
+                      <p className="text-[10px] text-muted-foreground">wtatennis.com</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <AnimatePresence mode="popLayout">
+                {searchMode === "LOADING" ? (
+                  <motion.div
+                    key="arc-loading-results-2-loading"
+                    className="flex h-[72px] w-[100px] flex-col items-center justify-center gap-y-2 rounded-lg bg-muted px-2 py-4"
+                    exit={{ opacity: 0, scale: 0.2, filter: "blur(4px)" }}
+                    transition={{ type: "spring", duration: 0.2, bounce: 0 }}
+                  >
+                    <div className="flex h-full w-full flex-col gap-y-1">
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                      <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                    </div>
+                    <div className="flex h-full w-full items-end">
+                      <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="arc-loading-results-2-result"
+                    aria-label="Wikipedia"
+                    className="flex h-[72px] w-[100px] cursor-pointer flex-col rounded-lg bg-muted"
+                    initial={{ opacity: 0, scale: 0.2, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    transition={{ type: "spring", duration: 0.2, bounce: 0 }}
+                  >
+                    <div className="flex w-full flex-1 items-center gap-2 text-pretty px-2 text-[10px] font-bold">
+                      List of WTA number 1 players
+                    </div>
+                    <div className="inline-flex items-center gap-x-1 px-2 py-2">
+                      <Image src={wikipediaLogo} className="h-4 w-4 dark:rounded-sm dark:bg-white" width={32} height={32} alt="" />
+                      <p className="text-[10px] text-muted-foreground">wikipedia.org</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-            <div className="mt-6 flex h-full w-full flex-col gap-2">
-              {Array.from({ length: 3 }).map((_, idx) => (
-                <div className="flex flex-row items-start gap-x-2" key={`arc-loading-results-${idx}`}>
-                  <Skeleton className="h-[16px] w-[16px] bg-muted-foreground/50" />
-                  <div className="flex w-full flex-col gap-y-1">
-                    <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                    <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
-                    <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
-                  </div>
-                </div>
-              ))}
+            <div className="mt-6 flex h-full w-full flex-col gap-2 px-4">
+              {searchMode === "LOADING" ? (
+                <>
+                  {Array.from({ length: 3 }).map((_, idx) => (
+                    <div className="flex flex-row items-start gap-x-2" key={`arc-loading-results-${idx}`}>
+                      <Skeleton className="h-[16px] w-[16px] bg-muted-foreground/50" />
+                      <div className="flex w-full flex-col gap-y-1">
+                        <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                        <Skeleton className="h-[8px] w-full bg-muted-foreground/50" />
+                        <Skeleton className="h-[8px] w-[40%] bg-muted-foreground/50" />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <motion.div
+                  layout
+                  variants={promptVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex flex-wrap items-start justify-start text-pretty pr-2 text-xs text-black dark:text-white"
+                >
+                  {`The current world No. 1 female tennis player in the WTA rankings is Iga Świątek. She is the first person from Poland to hold this ranking. The WTA rankings are determined based on a merit based system, considering the player who has garnered the most ranking points on the WTA Tour over the previous 52 weeks. Iga Świątek has been performing exceptionally well, and her achievements have secured her the top spot in women's singles tennis. 🎾`
+                    .split(" ")
+                    .map((word, index) => (
+                      <motion.p
+                        key={`arc-result-prompt-word-${index}`}
+                        variants={promptItemVariants}
+                        transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+                      >
+                        {word}
+                      </motion.p>
+                    ))}
+                </motion.div>
+              )}
             </div>
-            <motion.div
-              className="absolute inset-0 -z-[1] h-full w-full"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ type: "spring", duration: 0.5, bounce: 0, delay: 0.6 }}
-              style={{
-                background: "linear-gradient(120deg, rgba(202,181,244,1) 0%, rgba(228,172,192,1) 56%, rgba(244,232,240,1) 100%)",
-                borderRadius: "12px",
-              }}
-            ></motion.div>
+            <AnimatePresence>
+              {searchMode === "LOADING" && (
+                <motion.div
+                  className="absolute inset-0 -z-[1] h-full w-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.8 }}
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  transition={{ type: "spring", duration: 0.5, bounce: 0, delay: 0.6 }}
+                  style={{
+                    background: "linear-gradient(120deg, rgba(202,181,244,1) 0%, rgba(228,172,192,1) 56%, rgba(244,232,240,1) 100%)",
+                    borderRadius: "12px",
+                  }}
+                ></motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         );
-      case "RESULTS":
-        return <div>xd</div>;
       case "OFF":
         return null;
     }
